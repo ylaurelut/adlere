@@ -1,8 +1,11 @@
 package adlere.ylaurelut;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 
 import com.google.gson.Gson;
 
@@ -21,7 +24,6 @@ public class TrainBilling {
 	 * 
 	 * @param args
 	 */
-	// TODO handle Exceptions
 	public static void main(String[] args) throws Exception {
 		validateInputParameters(args);
 
@@ -37,6 +39,7 @@ public class TrainBilling {
 		String result = gson.toJson(cso);
 		PrintWriter outputFile = new PrintWriter(outputFilePath);
 		outputFile.print(result);
+		outputFile.flush();
 		outputFile.close();
 	}
 
@@ -45,9 +48,7 @@ public class TrainBilling {
 	 * - 2 and only 2 parameters,
 	 * - first param is a readable file,
 	 * - second param points to a writable filepath
-	 * 
 	 */
-	// TODO Error messages should be stored in locale dependent properties file
 	private static void validateInputParameters(String[] args) {
 		if (args.length != 2) {
 			System.out.println("ERROR : Wrong number of parameters");
@@ -56,6 +57,15 @@ public class TrainBilling {
 			System.out.println("- <outputFilePath>: filepath where result should be written");
 			System.exit(1);
 		}
-		// TODO perform params validation
+		
+		String inputFilePath = args[0];
+		File inputFile = new File(inputFilePath);
+		if(!Files.isReadable(FileSystems.getDefault().getPath(inputFile.getAbsolutePath()))) {
+			System.err.println("Unable to read input file "+inputFilePath);
+			System.exit(2);
+		}
+		
+		// no easy way to check if the output file can be written.
+		// We'll let an IOException fly if that happens
 	}
 }

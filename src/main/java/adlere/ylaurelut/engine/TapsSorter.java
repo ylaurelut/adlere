@@ -1,6 +1,7 @@
 package adlere.ylaurelut.engine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,9 @@ public class TapsSorter {
 	}
 	
 	/**
-	 * Goes through the input array of taps, and sorts each Tap by unixTimestamp for each customerId
-	 * @return a Map of Tap sorted by unixTimestamp, where the map key is the customerID.
+	 * Goes through the input array of taps, and sorts each Tap for each customerId.
+	 * A working assumption here is that the Taps are given in chronological order.
+	 * @return a Map of Tap, where the map key is the customerID.
 	 */
 	public Map<Integer, List<Tap>> getTapsSortedByCustomerId() {
 		Map<Integer, List<Tap>> tapsByCustomerId = new HashMap<Integer, List<Tap>>();
@@ -32,6 +34,13 @@ public class TapsSorter {
 				tapListForCustomerId.add(tap);
 			}
 		}
+		
+		// now sort list of taps by unixTimestamp:
+		// If for some reason the taps aren't in chronological order, 
+		// the result will be chaotic
+		tapsByCustomerId.forEach((customerId, tapList) -> {
+			Collections.sort(tapList);
+		});
 		
 		return tapsByCustomerId;
 	}

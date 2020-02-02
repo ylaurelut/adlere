@@ -9,9 +9,10 @@ import adlere.ylaurelut.model.Tap;
 public class CustomerBillingEngine {
 
 	/**
-	 * This is where the action takes places :)
+	 * Creates the summaries for each customer of the given array of Taps.
 	 * 
-	 * @return The POJO
+	 * @return The POJO containing the structure to be written as JSON in the output
+	 *         file
 	 */
 	public CustomerSummariesOutput getCustomerSummaries(Tap[] taps) {
 		CustomerSummariesOutput result = new CustomerSummariesOutput();

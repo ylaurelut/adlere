@@ -32,9 +32,12 @@ public class TripCalculator {
 			Tap entryTap = iter.next();
 			Station startStation = stationFactory.createStation(entryTap.getStation());
 			startStation.setTimePresentAtStation(entryTap.getUnixTimestamp());
-			Station endStation = stationFactory.createStation(iter.next().getStation());
-
-			summary.addTrip(createTrip(startStation, endStation));
+			if(iter.hasNext()) {
+				Station endStation = stationFactory.createStation(iter.next().getStation());
+				summary.addTrip(createTrip(startStation, endStation));
+			} else {
+				System.err.println("Missing (exit?) tap for customerId="+customerId);
+			}
 		}
 
 		// add all trip fares for "totalCostInCents"
